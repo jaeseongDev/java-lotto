@@ -24,13 +24,13 @@ public class LottoMachineController {
     }
 
     public void purchase() {
-        Lottos lottos = Lottos.from(getInputLottos());
+        Lottos lottos = getInputLottos();
         WinningLotto winningLotto = getInputWinningLotto();
         LottoStatisticResult result = lottos.match(winningLotto);
         outputView.printStatisticResult(result);
     }
 
-    private List<Lotto> getInputLottos() {
+    private Lottos getInputLottos() {
         PayAmount payAmount = inputView.readPayAmount();
         LottoCount lottoCount = payAmount.calculateLottoCount();
         LottoCount manualLottoCount = inputView.readManualLottoCount();
@@ -40,11 +40,10 @@ public class LottoMachineController {
         List<Lotto> manualLottos = getInputManualLottos(manualLottoCount);
 
         outputView.printPurchasingLotto(manualLottoCount.getCount(), autoLottoCount.getCount());
-        List<Lotto> autoLottos = Lottos.from(autoLottoCount.getCount()).getLottos();
-        outputView.printLottos(Lottos.from(autoLottos));
-        List<Lotto> lottos = new ArrayList<>();
-        lottos.addAll(manualLottos);
-        lottos.addAll(autoLottos);
+        Lottos autoLottos = Lottos.from(autoLottoCount.getCount());
+        outputView.printLottos(autoLottos);
+
+        Lottos lottos = autoLottos.concat(manualLottos);
         return lottos;
     }
 

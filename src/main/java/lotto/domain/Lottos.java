@@ -27,8 +27,9 @@ public class Lottos {
         return new Lottos(lottos);
     }
 
-    public List<Lotto> getLottos() {
-        return lottos;
+    public Lottos concat(List<Lotto> otherLottos) {
+        lottos.addAll(otherLottos);
+        return Lottos.from(lottos);
     }
 
     public List<List<Integer>> toInts() {
